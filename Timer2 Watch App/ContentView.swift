@@ -10,14 +10,19 @@ import SwiftUI
 struct ContentView: View {
     @State var count = 0
     @State var timer: Timer?
-    
+    @State var timerfl = false
+//    タイマーが起動しているかどうかのフラグを入れた。開始ボタンを連続で押すとおかしくなることを防ぐ
     var body: some View {
         VStack {
             Text("\(count)")
+                .font(.largeTitle)
                 .padding()
             Button(action: {
-                timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true){_ in
-                    self.count += 1
+                if timerfl == false {
+                    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true){_ in
+                        self.count += 1
+                    }
+                    timerfl = true
                 }
             }){
                 Text("開始")
@@ -27,6 +32,7 @@ struct ContentView: View {
 //                    値があるか調べる必要があるか？
                     if unWrapedtimer.isValid == true {
                         unWrapedtimer.invalidate()
+                        timerfl = false
                     }
                 }
             }){
@@ -37,6 +43,7 @@ struct ContentView: View {
 //                    ここでは調べてないが、エラー無しに動く
                         unWrapedtimer2.invalidate()
                         count = 0
+                    timerfl = false
                 }
             }){
                 Text("reset")
